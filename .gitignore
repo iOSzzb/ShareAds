@@ -1,0 +1,7 @@
+.DS_Store
+/工程项目/ShareAds/xcuserdata/
+/工程项目/ShareAds/*/xcuserdata/
+/工程项目/ShareAds/*/*/xcuserdata/
+/工程项目/ShareAds/ShareAds/Vender/Realm.framework/
+
+

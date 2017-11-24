@@ -1,0 +1,14 @@
+platform :ios, '8.0'
+#use_frameworks!
+target 'ShareAds' do
+    pod 'AFNetworking'
+    pod 'MJRefresh'
+    pod 'FMDB'
+    pod 'SDWebImage'
+    pod 'WebViewJavascriptBridge'
+    pod 'Masonry'
+    pod 'TZImagePickerController','~> 1.8.5'
+    pod 'YYModel'
+    pod 'SVProgressHUD'
+    pod 'CYLTabBarController'
+end

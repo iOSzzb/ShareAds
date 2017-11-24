@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="SAFormMultiAddImgCell">
+            <rect key="frame" x="0.0" y="0.0" width="151" height="88"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="151" height="88"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kt1-fo-TUD">
+                        <rect key="frame" x="0.0" y="0.0" width="151" height="88"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pluse.png" translatesAutoresizingMaskIntoConstraints="NO" id="bft-ze-Vlf">
+                        <rect key="frame" x="31.5" y="0.0" width="88" height="88"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="bft-ze-Vlf" secondAttribute="height" id="6d8-zK-TVG"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="kt1-fo-TUD" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="3En-uW-iXz"/>
+                <constraint firstAttribute="bottom" secondItem="kt1-fo-TUD" secondAttribute="bottom" id="7fR-Dh-PQS"/>
+                <constraint firstAttribute="bottom" secondItem="bft-ze-Vlf" secondAttribute="bottom" id="GNT-IA-7rt"/>
+                <constraint firstItem="bft-ze-Vlf" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="P47-fY-mNL"/>
+                <constraint firstItem="kt1-fo-TUD" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="j8c-zW-zRr"/>
+                <constraint firstAttribute="trailing" secondItem="kt1-fo-TUD" secondAttribute="trailing" id="jwZ-b6-Y9x"/>
+                <constraint firstItem="bft-ze-Vlf" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="wM7-cW-1l1"/>
+            </constraints>
+            <size key="customSize" width="151" height="88"/>
+            <connections>
+                <outlet property="_backgroundView" destination="kt1-fo-TUD" id="Y77-7J-gak"/>
+            </connections>
+            <point key="canvasLocation" x="23.5" y="106"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="pluse.png" width="50" height="50"/>
+    </resources>
+</document>
