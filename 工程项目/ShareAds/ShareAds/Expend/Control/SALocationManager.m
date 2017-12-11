@@ -12,6 +12,7 @@
 #import "Province.h"
 #import "City.h"
 #import "District.h"
+#import "SAUser.h"
 @interface SALocationManager()<CLLocationManagerDelegate>
 @end
 @implementation SALocationManager
@@ -74,6 +75,11 @@
            location.provId = provId;
            location.cityId = cityId;
            location.areaId = areaId;
+           location.userId = [SAUser shareUser].userId;
+           RLMRealm *realm = [RLMRealm defaultRealm];
+           [realm beginWriteTransaction];
+           [Location createOrUpdateInRealm:realm withValue:location];
+           [realm commitWriteTransaction];
            [NetworkInterface reportLoction:location success:^(NSDictionary *response) {
                [manager stopUpdatingLocation];
            } failure:^(NSString *message, NSInteger errorCode) {

@@ -11,9 +11,13 @@
 #import "SAUser.h"
 #import "NetworkInterface.h"
 #import "SALanunchView.h"
+#import "WXApi.h"
+#import "WXApiManager.h"
+#import <TencentOpenAPI/TencentOAuth.h>
 @interface AppDelegate ()
 
 @end
+NSString * const AppDelegateSysSuccessNotification = @"AppDelegateSysSuccessNotification";
 
 @implementation AppDelegate
 
@@ -23,39 +27,55 @@
     SALanunchView *lanunchView = [[SALanunchView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.rootViewController = [SATabBarController new];
     [self.window makeKeyAndVisible];
-//    [self.window addSubview:lanunchView];
-    self.locationManager = [[SALocationManager alloc] init];
-    [self.locationManager getCurrentLoaction];
+    [self.window addSubview:lanunchView];
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSLog(@"document path = %@",doc);
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
     [NetworkInterface autoLogin:^(NSDictionary *response) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                lanunchView.transform = CGAffineTransformMakeScale(2.0, 2.0);
-                lanunchView.alpha = 0.0;
-            } completion:^(BOOL finished) {
-                [lanunchView removeFromSuperview];
-            }];
-        });
+        dispatch_group_enter(group);
         [NetworkInterface syncTradesInfo:^(NSArray<Trade *> *tradeList) {
+            dispatch_group_leave(group);
         } failure:^(NSString *message, NSInteger errorCode) {
             
         }];
+        dispatch_group_enter(group);
         [NetworkInterface syncAreaInfo:^(NSArray<Province *> *provinceList, NSArray<City *> *cityList, NSArray<District *> *districtList) {
-            
+            dispatch_group_leave(group);
         } failure:^(NSString *message, NSInteger errorCode) {
             
         }];
+        dispatch_group_enter(group);
         [NetworkInterface getUserInfo:^{
-            
+            dispatch_group_leave(group);
         } failure:^(NSString *message, NSInteger errorCode) {
             
         }];
+        dispatch_group_leave(group);
     } failure:^(NSString *message, NSInteger errorCode) {
         
     }];
-    
-    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+//            lanunchView.transform = CGAffineTransformMakeScale(2.0, 2.0);
+//            lanunchView.alpha = 0.0;
+//            dispatch_group_leave(group);
+//        } completion:^(BOOL finished) {
+//            [lanunchView removeFromSuperview];
+//        }];
+//    });
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            lanunchView.transform = CGAffineTransformMakeScale(2.0, 2.0);
+            lanunchView.alpha = 0.0;
+            [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateSysSuccessNotification object:nil];
+            self.locationManager = [[SALocationManager alloc] init];
+            [self.locationManager getCurrentLoaction];
+        } completion:^(BOOL finished) {
+            [lanunchView removeFromSuperview];
+        }];
+    });
+    [WXApi registerApp:WX_APPID];
     return YES;
 }
 
@@ -86,5 +106,18 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    NSString *sourceAppliction = options[UIApplicationOpenURLOptionsSourceApplicationKey];
+    if ([sourceAppliction isEqualToString:@"com.tencent.mqq"]) {
+        return [TencentOAuth HandleOpenURL:url];
+    }
+    if ([sourceAppliction isEqualToString:@"com.tencent.mqq"]) {
+        return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+    }
+    return NO;
+}
 
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+}
 @end

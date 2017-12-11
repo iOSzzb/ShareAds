@@ -33,5 +33,7 @@
 @property (nonatomic,assign) NSInteger currNumber;
 @property (nonatomic,assign) NSInteger sellNumber;
 @property (nonatomic,strong) NSArray *url;
-
+@property (nonatomic,copy) NSString *typeDesc;
+@property (nonatomic,copy) NSString *status;
+@property (nonatomic,strong) NSArray *bannerUrlList;
 @end

@@ -9,5 +9,7 @@
 #import "Location.h"
 
 @implementation Location
-
++ (NSString *)primaryKey {
+    return @"userId";
+}
 @end

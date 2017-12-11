@@ -21,7 +21,7 @@
 #import "HomeBannerAds.h"
 #import "Commodity.h"
 #import "Location.h"
-
+#import "CommodityType.h"
 NSString * const NetworkInterfaceLoginSuccessNotification = @"kNetworkInterfaceLoginSuccessNotification";
 
 @implementation NetworkInterface
@@ -54,7 +54,7 @@ NSString * const NetworkInterfaceLoginSuccessNotification = @"kNetworkInterfaceL
         failure(@"参数不能为空",NetworkErrorCodeNillParam);
         return;
     }
-    NSDictionary *param = @{@"deviceId":uuid};
+    NSDictionary *param = @{@"deviceId":@"89860025111457197848"};
     [[NetworkManager shareManager] fetchDataWihtMethod:@"autoLogin" parameters:param sucess:^(NSDictionary *response) {
         success(response);
         NSString *cookies = response[@"cookies"];
@@ -460,7 +460,7 @@ addressDetail	String	是	地址详情
     }
     NSDictionary *param = @{@"versionNo":versionNo};
     [[NetworkManager shareManager] fetchDataWihtMethod:@"syncTradesInfo" parameters:param sucess:^(NSDictionary *response) {
-        NSString *returnVersionNo = response[@"versionNo"];
+//        NSString *returnVersionNo = response[@"version"];
         NSString *isNeedUpdate = response[@"isNeedUpdate"];
         if ([isNeedUpdate isEqualToString:@"N"]) {
             if (success) {
@@ -476,9 +476,15 @@ addressDetail	String	是	地址详情
                 [tradeList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     NSDictionary *dic = obj;
                     Trade *trade = [Trade yy_modelWithJSON:dic];
-                    trade.versionNo = returnVersionNo;
-                    [Trade createInRealm:realm withValue:trade];
-                    [list addObject:trade];
+                    Trade *localTrade = [Trade objectForPrimaryKey:trade.id];
+                    if (localTrade == nil) {
+//                        trade.versionNo = returnVersionNo;
+                        [Trade createInRealm:realm withValue:trade];
+                        [list addObject:trade];
+                    } else {
+                        localTrade.desc = trade.desc;
+                        [list addObject:localTrade];
+                    }
                 }];
                 [realm commitWriteTransaction];
                 if (success) {
@@ -514,7 +520,7 @@ addressDetail	String	是	地址详情
         NSString *returnVersionNo = response[@"versionNo"];
         NSString *isNeedUpdate = response[@"isNeedUpdate"];
         if ([isNeedUpdate isEqualToString:@"N"]) {
-            if (success == nil) {
+            if (success != nil) {
                 success([NSArray new],[NSArray new],[NSArray new]);
             }
         }
@@ -716,9 +722,15 @@ addressDetail	String	是	地址详情
     [[NetworkManager shareManager] fetchDataWihtMethod:@"getSpecUserNumber" parameters:param sucess:success failure:failure];
 }
 + (void)getCommodityListWithIndex:(NSInteger)index
+                             type:(NSString *)type
+                         keywords:(NSString *)keywords
+                         sortType:(NSString *)sortType
                           success:(void(^)(NSArray<Commodity *> *list ,NSInteger pageSize))success
                           failure:(NetworkFailureBlock)failure{
-    NSDictionary *param = @{@"index":@(index)};
+    NSDictionary *param = @{@"index":@(index),
+                            @"type":type,
+                            @"keywords":keywords,
+                            @"sortType":sortType};
     [[NetworkManager shareManager] fetchDataWihtMethod:@"getCommodityList" parameters:param sucess:^(NSDictionary *response) {
         NSInteger pageSize = [response[@"pageSize"] integerValue];
         NSArray *commodityList = response[@"commodityList"];
@@ -742,7 +754,7 @@ addressDetail	String	是	地址详情
                                   failure:(NetworkFailureBlock)failure{
     NSDictionary *param = @{@"index":@(index)};
     [[NetworkManager shareManager] fetchDataWihtMethod:@"getExchangeCommodityList" parameters:param sucess:^(NSDictionary *response) {
-        NSArray *withdrawList = response[@"WithdrawList"];
+        NSArray *withdrawList = response[@"exchangeList"];
         NSInteger pageSize = [response[@"pageSize"] integerValue];
         NSMutableArray<Withdraw*> *list = [NSMutableArray new];
         if (withdrawList != nil && ![withdrawList isEqual:[NSNull null]]) {
@@ -846,5 +858,28 @@ addressDetail	String	是	地址详情
     }
     NSDictionary *prarm = @{@"amount":money,@"rechargeType":type};
     [[NetworkManager shareManager] fetchDataWihtMethod:@"recharge" parameters:prarm sucess:success failure:failure];
+}
++ (void)syncCommodityTypeSuccess:(NetworkSuccessBlock)success
+                         failure:(NetworkFailureBlock)failure {
+    [[NetworkManager shareManager] fetchDataWihtMethod:@"syncCommodityType" parameters:@{} sucess:^(NSDictionary *response) {
+        NSArray *commodityTypeList = response[@"commodityTypeList"];
+        if (commodityTypeList != nil && ![commodityTypeList isEqual:[NSNull null]]) {
+            [commodityTypeList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSDictionary *dic = obj;
+                CommodityType *commodityType = [CommodityType yy_modelWithDictionary:dic];
+                RLMRealm *defaultRealm = [RLMRealm defaultRealm];
+                [defaultRealm beginWriteTransaction];
+                [CommodityType createOrUpdateInRealm:defaultRealm withValue:commodityType];
+                [defaultRealm commitWriteTransaction];
+            }];
+        }
+        if (success) {
+            success(response);
+        }
+    } failure:^(NSString *errorMessage, NSInteger errorCode) {
+        if (failure) {
+            failure(errorMessage,errorCode);
+        }
+    }];
 }
 @end

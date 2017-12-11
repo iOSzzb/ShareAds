@@ -22,44 +22,56 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 //    CGFloat tabbarHeight = self.tabBar.bounds.size.height;
+    self.tabBar.tintColor = [UIColor colorWithRed:250.0/255.0 green:192.0/255.0 blue:0 alpha:1];
     UITabBarItem *homeTabBarItem = [[UITabBarItem alloc] init];
-//    NSString *homeTitle = @"首页";
-    UIImage *homeImage = [UIImage imageNamed:@"home_tab_title"];
+    NSString *homeTitle = @"首页";
+    UIImage *homeImage = [[UIImage imageNamed:@"home_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     homeTabBarItem.image = homeImage;
+    homeTabBarItem.selectedImage = [[UIImage imageNamed:@"home_select"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    homeTabBarItem.title = homeTitle;
 //    NSDictionary *attributesDic = @{NSFontAttributeName:[UIFont systemFontOfSize:20 weight:UIFontWeightRegular]};
 //    [homeTabBarItem setTitleTextAttributes:attributesDic forState:UIControlStateNormal];
 //    CGSize homeTitleSize = [homeTitle sizeWithAttributes:attributesDic];
 //    homeTabBarItem.titlePositionAdjustment = UIOffsetMake(0, -(tabbarHeight-homeTitleSize.height)/2);
-    homeTabBarItem.imageInsets = UIEdgeInsetsMake(8, 0, -8, 0);
+//    homeTabBarItem.imageInsets = UIEdgeInsetsMake(8, 0, -8, 0);
     BaseNavigationController *homeNav = [[BaseNavigationController alloc] initWithRootViewController:[SAHomeViewController new]];
     homeNav.tabBarItem = homeTabBarItem;
     
     UITabBarItem *mallTabBarItem = [[UITabBarItem alloc] init];
-//    NSString *mallTitle = @"兑换\n商城";
+    NSString *mallTitle = @"商城";
+    mallTabBarItem.title = mallTitle;
 //    mallTabBarItem.title = mallTitle;
 //    NSDictionary *attributesDic1 = @{NSFontAttributeName:[UIFont systemFontOfSize:12 weight:UIFontWeightRegular]};
 //    [mallTabBarItem setTitleTextAttributes:attributesDic1 forState:UIControlStateNormal];
 //    CGSize mallTitleSize = [mallTitle sizeWithAttributes:attributesDic1];
 //    mallTabBarItem.titlePositionAdjustment = UIOffsetMake(0, -(tabbarHeight-mallTitleSize.height)/2);
-    UIImage *mallImage = [UIImage imageNamed:@"mall_tab_title"];
+    UIImage *mallImage = [[UIImage imageNamed:@"shop_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     mallTabBarItem.image = mallImage;
+    mallTabBarItem.selectedImage = [[UIImage imageNamed:@"shop_select"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     BaseNavigationController *mallNav = [[BaseNavigationController alloc] initWithRootViewController:[SAMallViewController new]];
     mallNav.tabBarItem = mallTabBarItem;
-    mallTabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+    
+    
     
     UITabBarItem *publishTabBarItem = [[UITabBarItem alloc] init];
-    UIImage *publishImage = [UIImage imageNamed:@"publish_tab_title"];
+    NSString *publishTitle = @"发布";
+    UIImage *publishImage = [[UIImage imageNamed:@"advert_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     publishTabBarItem.image = publishImage;
+    publishTabBarItem.selectedImage = [[UIImage imageNamed:@"advert_select"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    publishTabBarItem.title = publishTitle;
+    
     BaseNavigationController *publishNav = [[BaseNavigationController alloc] initWithRootViewController:[SAPublishViewController new]];
     publishNav.tabBarItem = publishTabBarItem;
-    publishTabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
     
-//    me_tab_title@2x
+    
+    
     
     UITabBarItem *meTabBarItem = [[UITabBarItem alloc] init];
-    UIImage *meImage = [UIImage imageNamed:@"me_tab_title"];
+    NSString *meTitle = @"我的";
+    UIImage *meImage = [[UIImage imageNamed:@"my_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     meTabBarItem.image = meImage;
-    meTabBarItem.imageInsets = UIEdgeInsetsMake(7, 0, -7, 0);
+    meTabBarItem.selectedImage = [[UIImage imageNamed:@"my_select"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    meTabBarItem.title = meTitle;
     BaseNavigationController *meNav = [[BaseNavigationController alloc] initWithRootViewController:[SAMeViewController new]];
     meNav.tabBarItem = meTabBarItem;
     

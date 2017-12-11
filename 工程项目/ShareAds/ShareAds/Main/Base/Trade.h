@@ -21,3 +21,5 @@ versionNo	String	是	版本号
 @property NSString *desc;
 @property NSString *versionNo;
 @end
+
+RLM_ARRAY_TYPE(Trade)

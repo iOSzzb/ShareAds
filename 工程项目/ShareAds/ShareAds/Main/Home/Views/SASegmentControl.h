@@ -10,6 +10,7 @@
 @class  SASegmentControl;
 @protocol SASegmentControlDelegate<NSObject>
 - (void)segmentControl:(SASegmentControl *)segmentControl didSelectAtIndex:(NSInteger)index;
+- (void)segmentControlAddBtnOnClick:(SASegmentControl *)segmentControl;
 @end
 @interface SASegmentControl : UIView
 @property (nonatomic, weak) id<SASegmentControlDelegate> delegate;
@@ -17,5 +18,5 @@
 @property (nonatomic, strong) UIColor *selectedColor;
 @property (nonatomic, strong) UIColor *normalColor;
 @property (nonatomic, assign) NSInteger defaultIndex;
-@property (nonatomic, readonly) NSInteger currentIndex;
+@property (nonatomic, assign) NSInteger currentIndex;
 @end

@@ -243,8 +243,11 @@ typedef void(^NetworkSuccessBlock)(NSDictionary *response);
  查询商品列表	
  */
 + (void)getCommodityListWithIndex:(NSInteger)index
-                          success:(void(^)(NSArray<Commodity *> *list ,NSInteger pageSize))success
-                          failure:(NetworkFailureBlock)failure;
+                                     type:(NSString *)type
+                                 keywords:(NSString *)keywords
+                                 sortType:(NSString *)sortType
+                                  success:(void(^)(NSArray<Commodity *> *list ,NSInteger pageSize))success
+                                  failure:(NetworkFailureBlock)failure;
 /**
  查询兑换商品记录
  */
@@ -285,5 +288,6 @@ typedef void(^NetworkSuccessBlock)(NSDictionary *response);
 + (void)recharge:(NSString *)money type:(NSString *)type
          success:(NetworkSuccessBlock)success
          failure:(NetworkFailureBlock)failure;
-
++ (void)syncCommodityTypeSuccess:(NetworkSuccessBlock)success
+                         failure:(NetworkFailureBlock)failure;
 @end

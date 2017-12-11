@@ -48,8 +48,9 @@
 @property NSString *status;
 @property NSString *releaseTime;
 @property NSInteger saveTime;
+@property NSString *content;
 @property (nonatomic, strong) NSArray *timeShareArray;
-@property (nonatomic, strong) NSArray *areaShareArray;
-@property (nonatomic, strong) NSArray *chanelShareArray;
+//@property (nonatomic, strong) NSArray *areaShareArray;
+@property NSString *shreChannelArray;
 
 @end

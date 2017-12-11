@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "SALocationManager.h"
+extern NSString *const AppDelegateSysSuccessNotification;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

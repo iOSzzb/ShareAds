@@ -18,7 +18,8 @@
 @interface Withdraw : BaseModel
 @property NSString *id;
 @property NSString *desc;
-@property float money;
-@property NSInteger time;
+@property NSString *money;
+@property NSString *time;
 @property NSString *status;
+@property NSString *type;
 @end

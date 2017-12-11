@@ -8,8 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <YYModel/YYModel.h>
-@interface Location : NSObject
-@property (nonatomic, copy) NSString *provId;//省
-@property (nonatomic, copy) NSString *cityId;//市
-@property (nonatomic, copy) NSString *areaId;//区
+#import "BaseModel.h"
+@interface Location : BaseModel
+@property NSString *provId;//省
+@property NSString *cityId;//市
+@property NSString *areaId;//区
+@property NSString *userId;
+
 @end
