@@ -149,6 +149,7 @@
 		D9B18DAF1FDB8EEA00AB4898 /* yaoqinghaoyou_qqspace@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9B18DAB1FDB8EEA00AB4898 /* yaoqinghaoyou_qqspace@2x.png */; };
 		D9B18DB01FDB8EEA00AB4898 /* yaoqinghaoyou_weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9B18DAC1FDB8EEA00AB4898 /* yaoqinghaoyou_weixin@2x.png */; };
 		D9BF9BAD1FDE608500578233 /* SAExCommdityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9BF9BAC1FDE608500578233 /* SAExCommdityViewController.m */; };
+		D9BF9BAF1FDE7D6F00578233 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9BF9BAE1FDE7D6F00578233 /* Realm.framework */; };
 		D9D000341F1C5D3900B59E5B /* NetworkInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = D9D000331F1C5D3900B59E5B /* NetworkInterface.m */; };
 		D9D000371F1CA86100B59E5B /* MakeMoney.m in Sources */ = {isa = PBXBuildFile; fileRef = D9D000361F1CA86100B59E5B /* MakeMoney.m */; };
 		D9D0003A1F1CB14500B59E5B /* Withdraw.m in Sources */ = {isa = PBXBuildFile; fileRef = D9D000391F1CB14500B59E5B /* Withdraw.m */; };
@@ -402,6 +403,7 @@
 		D9B18DAC1FDB8EEA00AB4898 /* yaoqinghaoyou_weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yaoqinghaoyou_weixin@2x.png"; sourceTree = "<group>"; };
 		D9BF9BAB1FDE608500578233 /* SAExCommdityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAExCommdityViewController.h; sourceTree = "<group>"; };
 		D9BF9BAC1FDE608500578233 /* SAExCommdityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAExCommdityViewController.m; sourceTree = "<group>"; };
+		D9BF9BAE1FDE7D6F00578233 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		D9D000321F1C5D3900B59E5B /* NetworkInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkInterface.h; sourceTree = "<group>"; };
 		D9D000331F1C5D3900B59E5B /* NetworkInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkInterface.m; sourceTree = "<group>"; };
 		D9D000351F1CA86100B59E5B /* MakeMoney.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeMoney.h; sourceTree = "<group>"; };
@@ -461,6 +463,7 @@
 				D9E9D1471FDA25E4002931F1 /* libsqlite3.tbd in Frameworks */,
 				D9E9D1551FDA2FD9002931F1 /* libWeChatSDK.a in Frameworks */,
 				D9E9D1451FDA25D0002931F1 /* CoreGraphics.framework in Frameworks */,
+				D9BF9BAF1FDE7D6F00578233 /* Realm.framework in Frameworks */,
 				D9E9D1431FDA25C5002931F1 /* SystemConfiguration.framework in Frameworks */,
 				D9E9D1411FDA25B3002931F1 /* libiconv.tbd in Frameworks */,
 				D9A1781A1F189F0F00C1520D /* Security.framework in Frameworks */,
@@ -806,6 +809,7 @@
 		D9674DBF1F0C8B2E00B705B5 /* Vender */ = {
 			isa = PBXGroup;
 			children = (
+				D9BF9BAE1FDE7D6F00578233 /* Realm.framework */,
 				D9E9D14E1FDA2FD9002931F1 /* OpenSDK1.8.1 */,
 				D9E9D13E1FDA256B002931F1 /* TencentOpenAPI.framework */,
 				D9377FC01F13216C00161F46 /* SDCycleScrollView */,
