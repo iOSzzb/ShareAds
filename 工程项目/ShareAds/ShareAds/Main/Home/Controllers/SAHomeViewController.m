@@ -89,7 +89,7 @@ static NSString * const ADCellResuseID = @"ADCellResuseID";
 }
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.notiToken stop];
+    [self.notiToken invalidate];
 }
 #pragma mark - private method
 #pragma mark -- setup UI
