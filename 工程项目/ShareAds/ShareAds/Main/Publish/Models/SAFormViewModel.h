@@ -16,7 +16,8 @@ typedef NS_ENUM(NSInteger,SAFormCellStyle) {
     SAFormCellStyleTextView,
     SAFormCellStyleMultiPhotos,
     SAFormCellStyleMultiSelectArea,
-    SAFormCellStyleMultiSelectShareChannel
+    SAFormCellStyleMultiSelectShareChannel,
+    SAFormCellStyleSwitchAndJump
 };
 typedef NS_ENUM(NSInteger,SAFormID) {
     SAFormIDIndusty,// tradeId	String	是	行业
@@ -34,7 +35,9 @@ typedef NS_ENUM(NSInteger,SAFormID) {
     SAFormIDAllowShareArea,//allowShareArea	json数组	是
     SAFormIDAllowShareChannel,//allowShareChannel	String	是	允许分享的渠道
     SAFormIDneedInvoice,//needInvoice	String	是	是否需要发票。
-    SAFormIDRecommender//recommender	String	是	推荐人
+    SAFormIDRecommender,//recommender	String	是	推荐人
+    SAFormIDUserMobile,// 用户手机号
+    SAFormIDAgreement//服务协议
 };
 @interface SAFormViewModel : NSObject
 @property (nonatomic,readonly) SAFormID ID;

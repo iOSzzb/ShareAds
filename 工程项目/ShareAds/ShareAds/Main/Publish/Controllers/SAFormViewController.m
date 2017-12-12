@@ -21,6 +21,8 @@
 #import "SAFormSelectShareTimeController.h"
 #import "SAFormShareChannelCell.h"
 #import "SAUploadImgeStatusModel.h"
+#import "CommonWebViewController.h"
+#import "SAFormSwitchAndJumpCell.h"
 @interface SAFormViewController ()<UITableViewDelegate,UITableViewDataSource,SASelectTradeViewControllerDelegate,SASelectAreaControllerDelegate,SAFormSelectShareTimeControllerDelegate,TZImagePickerControllerDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray *dataSource;
@@ -38,6 +40,7 @@ static NSString * const kTextViewCell = @"kTextViewCell";
 static NSString * const kMultiPhotoCell = @"kMultiPhotoCell";
 static NSString * const kMultiAreaCell = @"kMultiAreaCell";
 static NSString * const kMultiChannelCell = @"kMultiChannelCell";
+static NSString * const kSwitchAndJumpCell = @"kSwitchAndJumpCell";
 static NSString * const kAdsLinkUrlCellTitle = @"广告链接";
 static NSString * const kAdsContentCellTitle = @"广告内容";
 static NSString * const kAdsImgsCellTitle = @"广告图片";
@@ -45,7 +48,9 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self addBackItem];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(publish)];
+    rightItem.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem = rightItem;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstResponderNotification:) name:SAFormViewModelFirstResponderNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -75,7 +80,9 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 - (void)p_setupTableView {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    _tableView.sectionHeaderHeight = 15;
+    _tableView.sectionFooterHeight = 0.1;
     [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([SAFormJumpSelectCell class]) bundle:nil] forCellReuseIdentifier:kJumpSelectCell];
     [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([SAFormInputCell class]) bundle:nil] forCellReuseIdentifier:kInputCell];
     [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([SAFormSwitchCell class]) bundle:nil] forCellReuseIdentifier:kSwitchCell];
@@ -83,6 +90,7 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
     [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([SAFormTextViewCell class]) bundle:nil] forCellReuseIdentifier:kTextViewCell];
     [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([SAFormMultiImgCell class]) bundle:nil] forCellReuseIdentifier:kMultiPhotoCell];
     [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([SAFormShareChannelCell class]) bundle:nil] forCellReuseIdentifier:kMultiChannelCell];
+    [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([SAFormSwitchAndJumpCell class]) bundle:nil] forCellReuseIdentifier:kSwitchAndJumpCell];
     [_tableView registerClass:[SAFormMultiSelectCell class] forCellReuseIdentifier:kMultiAreaCell];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -96,22 +104,25 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
     }];
     SAFormViewModel *tradeCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleJump ID:SAFormIDIndusty];
     tradeCell.title = @"选择行业";
-    SAFormViewModel *userCompanyCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleInput ID:SAFormIDCompany];
-    userCompanyCell.title = @"公司名称";
-    userCompanyCell.placeHolder = @"请输入公司名称";
-    SAFormViewModel *adsTitleCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleInput ID:SAFormIDAdsTitle];
-    adsTitleCell.title = @"广告标题";
-    adsTitleCell.placeHolder = @"请输入广告标题";
-    adsTitleCell.keyboardType = UIKeyboardTypeDefault;
+    SAFormViewModel *userMobile = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleInput ID:SAFormIDCompany];
+    userMobile.title = @"手机号码";
+    userMobile.placeHolder = @"请输入手机号码";
+//    SAFormViewModel *adsTitleCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleInput ID:SAFormIDAdsTitle];
+//    adsTitleCell.title = @"广告内容";
+//    adsTitleCell.placeHolder = @"请输入广告标题";
+//    adsTitleCell.keyboardType = UIKeyboardTypeDefault;
+    SAFormViewModel *contentCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleTextView ID:SAFormIDContent];
+    
+    contentCell.title = kAdsContentCellTitle;
     SAFormViewModel *adsIconCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleChoseImg ID:SAFormIDAdsIcon];
     adsIconCell.title = @"广告图标";
     self.adsIconCellModel = adsIconCell;
     SAFormViewModel *priceCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleInput ID:SAFormIDPrice];
-    priceCell.title = @"单价";
+    priceCell.title = @"分享单价";
     priceCell.placeHolder = @"请输入单价";
     priceCell.keyboardType = UIKeyboardTypeDecimalPad;
     SAFormViewModel *amountCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleInput ID:SAFormIDAmount];
-    amountCell.title = @"总价";
+    amountCell.title = @"分享总价";
     amountCell.placeHolder = @"请输入总价";
     amountCell.keyboardType = UIKeyboardTypeDecimalPad;
     SAFormViewModel *hasUrlCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleSwitch ID:SAFormIDIsHaveUrl];
@@ -137,16 +148,22 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
     needInvoiceCell.switchStatus = NO;
     needInvoiceCell.title = @"需要发票";
     SAFormViewModel *recommderCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleInput ID:SAFormIDRecommender];
-    recommderCell.title = @"推荐人";
-    recommderCell.placeHolder = @"请输入您的推荐人";
-    self.dataSource = @[tradeCell,userCompanyCell,adsTitleCell,adsIconCell,priceCell,amountCell,allowShareCountCell,allowShareTimeCell,allowShareAreaCell,allowShareChannelCell,needInvoiceCell,recommderCell,hasUrlCell,adsUrlCell];
+    recommderCell.title = @"邀请码";
+    recommderCell.placeHolder = @"请输入您的推荐人邀请码";
+    
+    SAFormViewModel *agreementCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleSwitchAndJump ID:SAFormIDAgreement];
+    agreementCell.title = @"我已同意服务协议";
+    agreementCell.switchStatus = NO;
+    self.dataSource = @[tradeCell,userMobile,contentCell,priceCell,amountCell,allowShareCountCell,recommderCell,allowShareAreaCell,allowShareTimeCell,allowShareChannelCell,needInvoiceCell,hasUrlCell,agreementCell,adsIconCell,adsUrlCell];
 }
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.dataSource.count;
 }
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SAFormViewModel *model = self.dataSource[indexPath.row];
+    SAFormViewModel *model = self.dataSource[indexPath.section];
     SAFormBaseCell *cell;
     switch (model.style) {
         case SAFormCellStyleJump:
@@ -199,7 +216,8 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
             SAFormMultiSelectCell *multiCell = (SAFormMultiSelectCell *)cell;
             __weak typeof(self) weakSelf = self;
             multiCell.deleteBlock = ^{
-                [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//                [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
             };
             multiCell.addBlock = ^{
                 [weakSelf tableView:weakSelf.tableView didSelectRowAtIndexPath:indexPath];
@@ -213,6 +231,12 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
             cell.model = model;
         }
             break;
+        case SAFormCellStyleSwitchAndJump: {
+            cell = [tableView dequeueReusableCellWithIdentifier:kSwitchAndJumpCell forIndexPath:indexPath];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.model = model;
+            break;
+        }
         default:
             cell = [SAFormBaseCell new];
             break;
@@ -220,7 +244,7 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    SAFormViewModel *model = _dataSource[indexPath.row];
+    SAFormViewModel *model = _dataSource[indexPath.section];
     if (model.ID == SAFormIDIndusty) {
         SASelectTradeViewController *vc = [SASelectTradeViewController new];
         vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
@@ -261,12 +285,17 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
             [self presentViewController:vc animated:NO completion:nil];
         });
     }
+    if (model.ID == SAFormIDAgreement) {
+        CommonWebViewController *webvc = [CommonWebViewController new];
+        webvc.urlStr = @"https://www.baidu.com";
+        [self.navigationController pushViewController:webvc animated:YES];
+    }
     [self.firstResponder resignFirstResponder];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.selected = NO;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SAFormViewModel *model = self.dataSource[indexPath.row];
+    SAFormViewModel *model = self.dataSource[indexPath.section];
     if (model.ID == SAFormIDContent) {
         return 60;
     }
@@ -293,8 +322,9 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
     }];
     selectedModel.placeHolder = trade.desc;
     selectedModel.commitObj = trade.id;
-    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:[_dataSource indexOfObject:selectedModel] inSection:0];
-    [_tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+//    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:[_dataSource indexOfObject:selectedModel] inSection:0];
+    [_tableView reloadSections:[NSIndexSet indexSetWithIndex:[_dataSource indexOfObject:selectedModel] ] withRowAnimation:UITableViewRowAnimationNone];
+//    [_tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
 }
 - (void)selectAreaController:(SASelectAreaController *)sexvc didSelectProvince:(Province *)province city:(City *)city district:(District *)district {
     __block SAFormViewModel *selectedModel = nil;
@@ -327,7 +357,8 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
         [array addObject:mutDic];
         selectedModel.commitObj = array;
     }
-    [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//    [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [_tableView reloadSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationNone];
 }
 - (void)selectShareTimeController:(SAFormSelectShareTimeController *)vc didSelectTime:(NSString *)time {
     __block SAFormViewModel *selectedModel = nil;
@@ -351,8 +382,9 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
         selectedModel.placeHolder = @"工作日";
     }
     selectedModel.commitObj = time;
-    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:[_dataSource indexOfObject:selectedModel] inSection:0];
-    [_tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+//    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:[_dataSource indexOfObject:selectedModel] inSection:0];
+//    [_tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+    [_tableView reloadSections:[NSIndexSet indexSetWithIndex:[_dataSource indexOfObject:selectedModel]] withRowAnimation:UITableViewRowAnimationNone];
 }
 #pragma mark - 观察者
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -360,26 +392,26 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
     if ([keyPath isEqualToString:@"switchStatus"]) {
         BOOL switchStatus = [change[NSKeyValueChangeNewKey] boolValue];
         if (switchStatus == YES) {
-            NSInteger contentCellIndex = 9999;
-            BOOL contentFound = NO;
-            for (NSInteger i = _dataSource.count - 1; i > 0; i--) {
-                SAFormViewModel *model = _dataSource[i];
-                
-                if ([model.title isEqualToString:kAdsContentCellTitle]) {
-                    contentCellIndex = i;
-                    contentFound = YES;
-                    break;
-                }
-            }
-            if (contentFound) {
-                NSMutableArray *mutDataSource = [NSMutableArray arrayWithArray:_dataSource];
-                [mutDataSource removeObjectAtIndex:contentCellIndex];
-                _dataSource = [mutDataSource copy];
-                [_tableView beginUpdates];
-                [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:contentCellIndex inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
-                [_tableView endUpdates];
-                
-            }
+//            NSInteger contentCellIndex = 9999;
+//            BOOL contentFound = NO;
+//            for (NSInteger i = _dataSource.count - 1; i > 0; i--) {
+//                SAFormViewModel *model = _dataSource[i];
+//                
+//                if ([model.title isEqualToString:kAdsContentCellTitle]) {
+//                    contentCellIndex = i;
+//                    contentFound = YES;
+//                    break;
+//                }
+//            }
+//            if (contentFound) {
+//                NSMutableArray *mutDataSource = [NSMutableArray arrayWithArray:_dataSource];
+//                [mutDataSource removeObjectAtIndex:contentCellIndex];
+//                _dataSource = [mutDataSource copy];
+//                [_tableView beginUpdates];
+//                [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:contentCellIndex inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+//                [_tableView endUpdates];
+//                
+//            }
             NSInteger multiPhotoCellIndex = 9999;
             BOOL imgFound = NO;
             for (NSInteger i = _dataSource.count - 1; i > 0; i--) {
@@ -395,7 +427,8 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
                 [mutDataSource removeObjectAtIndex:multiPhotoCellIndex];
                 _dataSource = [mutDataSource copy];
                 [_tableView beginUpdates];
-                [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:multiPhotoCellIndex inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+//                [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:multiPhotoCellIndex]] withRowAnimation:UITableViewRowAnimationRight];
+                [_tableView deleteSections:[NSIndexSet indexSetWithIndex:multiPhotoCellIndex] withRowAnimation:UITableViewRowAnimationRight];
                 [_tableView endUpdates];
             }
             
@@ -407,7 +440,8 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
             [mutDataSource addObject:adsUrlCell];
             _dataSource = [mutDataSource copy];
             [_tableView beginUpdates];
-            [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_dataSource indexOfObject:adsUrlCell] inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+//            [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:[_dataSource indexOfObject:adsUrlCell]]] withRowAnimation:UITableViewRowAnimationLeft];
+            [_tableView insertSections:[NSIndexSet indexSetWithIndex:[_dataSource indexOfObject:adsUrlCell]] withRowAnimation:UITableViewRowAnimationLeft];
             [_tableView endUpdates];
         }
         else {
@@ -424,20 +458,22 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
                 [mutDataSource removeObjectAtIndex:linkUrlCellIndex];
                 _dataSource = [mutDataSource copy];
                 [_tableView beginUpdates];
-                [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:linkUrlCellIndex inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+//                [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:linkUrlCellIndex]] withRowAnimation:UITableViewRowAnimationLeft];
+                [_tableView deleteSections:[NSIndexSet indexSetWithIndex:linkUrlCellIndex] withRowAnimation:UITableViewRowAnimationLeft];
                 [_tableView endUpdates];
             }
-            SAFormViewModel *contentCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleTextView ID:SAFormIDContent];
-            contentCell.title = kAdsContentCellTitle;
+//            SAFormViewModel *contentCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleTextView ID:SAFormIDContent];
+//            contentCell.title = kAdsContentCellTitle;
             SAFormViewModel *multiPhotoCell = [[SAFormViewModel alloc] initWithStyle:SAFormCellStyleMultiPhotos ID:SAFormIDImgList];
             multiPhotoCell.title = kAdsImgsCellTitle;
             NSMutableArray *mut = [NSMutableArray arrayWithArray:_dataSource];
-            [mut addObjectsFromArray:@[contentCell,multiPhotoCell]];
+            [mut addObjectsFromArray:@[multiPhotoCell]];
             _dataSource = [mut copy];
-            NSIndexPath *contentPath = [NSIndexPath indexPathForRow:[_dataSource indexOfObject:contentCell] inSection:0];
-            NSIndexPath *multiPhotoPath = [NSIndexPath indexPathForRow:[_dataSource indexOfObject:multiPhotoCell] inSection:0];
+//            NSIndexPath *contentPath = [NSIndexPath indexPathForRow:[_dataSource indexOfObject:contentCell] inSection:0];
+            NSIndexPath *multiPhotoPath = [NSIndexPath indexPathForRow:0 inSection:[_dataSource indexOfObject:multiPhotoCell]];
             [_tableView beginUpdates];
-            [_tableView insertRowsAtIndexPaths:@[contentPath,multiPhotoPath] withRowAnimation:UITableViewRowAnimationRight];
+//            [_tableView insertRowsAtIndexPaths:@[multiPhotoPath] withRowAnimation:UITableViewRowAnimationRight];
+            [_tableView insertSections:[NSIndexSet indexSetWithIndex:multiPhotoPath.section] withRowAnimation:UITableViewRowAnimationRight];
             [_tableView endUpdates];
         }        
     }
@@ -451,6 +487,13 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
     for (int i = 0; i < self.dataSource.count; i++) {
         SAFormViewModel *model = self.dataSource[i];
         switch (model.ID) {
+            case SAFormIDAgreement: {
+                if (![model.commitObj isEqualToString:@"Y"]) {
+                    [SVProgressHUD showInfoWithStatus:@"您必须同意服务协议才能发布广告"];
+                    return;
+                }
+                break;
+            }
             case SAFormIDIndusty: {
                 if (model.commitObj == nil) {
                     [SVProgressHUD showErrorWithStatus:@"请您选择行业"];
@@ -592,6 +635,15 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
                 [mutParam setObject:model.commitObj forKey:@"url"];
             }
                 break;
+            case SAFormIDUserMobile:
+            {
+                if (model.commitObj == nil) {
+                    [SVProgressHUD showErrorWithStatus:@"请输入手机号"];
+                    return;
+                }
+                [mutParam setObject:model.commitObj forKey:@"phone"];
+            }
+                break;
             default:
                 break;
         }
@@ -721,8 +773,9 @@ static NSString * const kAdsImgsCellTitle = @"广告图片";
             return NO;
         }
     }];
-    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:index inSection:0];
-    [_tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+//    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:index inSection:0];
+//    [_tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+    [_tableView reloadSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationNone];
 }
 - (void)keyboardWillDismiss:(NSNotification *)notification {
     

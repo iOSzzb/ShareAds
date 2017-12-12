@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="17B1003" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -50,7 +50,7 @@
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <state key="normal" title="编辑"/>
                         <connections>
-                            <action selector="btnClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="lIw-CR-Apf"/>
+                            <action selector="btnClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Khz-08-Ted"/>
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vxu-G7-rd5">
@@ -58,7 +58,7 @@
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <state key="normal" title="下架"/>
                         <connections>
-                            <action selector="btnClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="hf4-ov-Dpb"/>
+                            <action selector="btnClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="5dO-Xm-Z2T"/>
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ad8-I3-cO0">
@@ -87,12 +87,12 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="_editBtn" destination="lBg-qa-kXD" id="2Py-lc-3op"/>
-                <outlet property="_offBtn" destination="Vxu-G7-rd5" id="RkZ-4l-aHb"/>
                 <outlet property="adsImageView" destination="OLx-Q9-hFc" id="4jR-mb-3ba"/>
                 <outlet property="amountLabel" destination="2Q4-Sr-mta" id="Yzo-y9-5oI"/>
+                <outlet property="leftBtn" destination="lBg-qa-kXD" id="u3G-3q-N9E"/>
                 <outlet property="nameLabel" destination="IX2-xl-WfX" id="vLm-MO-Tdj"/>
                 <outlet property="priceLabel" destination="aTh-Ig-JcG" id="zpx-wr-dd0"/>
+                <outlet property="rightBtn" destination="Vxu-G7-rd5" id="Dsz-az-dch"/>
                 <outlet property="statusImgView" destination="Ad8-I3-cO0" id="CAS-UZ-0ee"/>
             </connections>
             <point key="canvasLocation" x="-109.5" y="12.5"/>

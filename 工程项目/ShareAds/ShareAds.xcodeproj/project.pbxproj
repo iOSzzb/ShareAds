@@ -150,6 +150,8 @@
 		D9B18DB01FDB8EEA00AB4898 /* yaoqinghaoyou_weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9B18DAC1FDB8EEA00AB4898 /* yaoqinghaoyou_weixin@2x.png */; };
 		D9BF9BAD1FDE608500578233 /* SAExCommdityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9BF9BAC1FDE608500578233 /* SAExCommdityViewController.m */; };
 		D9BF9BAF1FDE7D6F00578233 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9BF9BAE1FDE7D6F00578233 /* Realm.framework */; };
+		D9BF9BB41FDFCEF900578233 /* SAFormSwitchAndJumpCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9BF9BB21FDFCEF900578233 /* SAFormSwitchAndJumpCell.m */; };
+		D9BF9BB51FDFCEF900578233 /* SAFormSwitchAndJumpCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9BF9BB31FDFCEF900578233 /* SAFormSwitchAndJumpCell.xib */; };
 		D9D000341F1C5D3900B59E5B /* NetworkInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = D9D000331F1C5D3900B59E5B /* NetworkInterface.m */; };
 		D9D000371F1CA86100B59E5B /* MakeMoney.m in Sources */ = {isa = PBXBuildFile; fileRef = D9D000361F1CA86100B59E5B /* MakeMoney.m */; };
 		D9D0003A1F1CB14500B59E5B /* Withdraw.m in Sources */ = {isa = PBXBuildFile; fileRef = D9D000391F1CB14500B59E5B /* Withdraw.m */; };
@@ -404,6 +406,9 @@
 		D9BF9BAB1FDE608500578233 /* SAExCommdityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAExCommdityViewController.h; sourceTree = "<group>"; };
 		D9BF9BAC1FDE608500578233 /* SAExCommdityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAExCommdityViewController.m; sourceTree = "<group>"; };
 		D9BF9BAE1FDE7D6F00578233 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		D9BF9BB11FDFCEF900578233 /* SAFormSwitchAndJumpCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAFormSwitchAndJumpCell.h; sourceTree = "<group>"; };
+		D9BF9BB21FDFCEF900578233 /* SAFormSwitchAndJumpCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAFormSwitchAndJumpCell.m; sourceTree = "<group>"; };
+		D9BF9BB31FDFCEF900578233 /* SAFormSwitchAndJumpCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SAFormSwitchAndJumpCell.xib; sourceTree = "<group>"; };
 		D9D000321F1C5D3900B59E5B /* NetworkInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkInterface.h; sourceTree = "<group>"; };
 		D9D000331F1C5D3900B59E5B /* NetworkInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkInterface.m; sourceTree = "<group>"; };
 		D9D000351F1CA86100B59E5B /* MakeMoney.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeMoney.h; sourceTree = "<group>"; };
@@ -562,6 +567,9 @@
 				D97875981F27359900C06EE8 /* SAFormSwitchCell.h */,
 				D97875991F27359900C06EE8 /* SAFormSwitchCell.m */,
 				D978759A1F27359900C06EE8 /* SAFormSwitchCell.xib */,
+				D9BF9BB11FDFCEF900578233 /* SAFormSwitchAndJumpCell.h */,
+				D9BF9BB21FDFCEF900578233 /* SAFormSwitchAndJumpCell.m */,
+				D9BF9BB31FDFCEF900578233 /* SAFormSwitchAndJumpCell.xib */,
 				D97875A01F273E3B00C06EE8 /* SAFromChoseImageCell.h */,
 				D97875A11F273E3B00C06EE8 /* SAFromChoseImageCell.m */,
 				D97875A21F273E3B00C06EE8 /* SAFromChoseImageCell.xib */,
@@ -1180,6 +1188,7 @@
 				D9A178101F185F2C00C1520D /* SAMeTableViewCell.xib in Resources */,
 				D9612C771F298F620099B516 /* multi_close@2x.png in Resources */,
 				D905898D1FD6829E002A28E3 /* SAChoseTradeHeader.xib in Resources */,
+				D9BF9BB51FDFCEF900578233 /* SAFormSwitchAndJumpCell.xib in Resources */,
 				D97E14231F30B5C900C1694C /* expend_arrow@2x.png in Resources */,
 				D9AFAE721F28C75900AFF112 /* SASelectAreaController.xib in Resources */,
 				D9ACB4031FD5329100DEC0B3 /* shop_normal@3x.png in Resources */,
@@ -1267,6 +1276,7 @@
 				D9AFAE711F28C75900AFF112 /* SASelectAreaController.m in Sources */,
 				D9377FD01F13216C00161F46 /* TAAbstractDotView.m in Sources */,
 				D9D000431F1CB91300B59E5B /* ShareChannel.m in Sources */,
+				D9BF9BB41FDFCEF900578233 /* SAFormSwitchAndJumpCell.m in Sources */,
 				D9674DD91F0C8BB600B705B5 /* NSData+CommonCrypto.m in Sources */,
 				D9A178131F186EAD00C1520D /* SAUser.m in Sources */,
 				D9377FD61F13216C00161F46 /* UIView+SDExtension.m in Sources */,

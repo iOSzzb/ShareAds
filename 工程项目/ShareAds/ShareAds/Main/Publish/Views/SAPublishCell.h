@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 typedef NS_ENUM(NSInteger,PublishCellOptType)  {
-    PublishCellOptTypeEdit,
-    PublishCellOptTypeRemove
+    PublishCellOptTypeLeft,
+    PublishCellOptTypeRight
 };
 typedef void(^PublishCellBtnClickedBlock)(PublishCellOptType optType);
 @interface SAPublishCell : UITableViewCell
@@ -18,5 +18,9 @@ typedef void(^PublishCellBtnClickedBlock)(PublishCellOptType optType);
 @property (weak, nonatomic) IBOutlet UIImageView *adsImageView;
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *statusImgView;
+@property (weak, nonatomic) IBOutlet UIButton *leftBtn;
+
+@property (weak, nonatomic) IBOutlet UIButton *rightBtn;
+
 @property (nonatomic, copy) PublishCellBtnClickedBlock actionBlock;
 @end

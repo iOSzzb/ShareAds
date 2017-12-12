@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface SAFormViewController : UIViewController
+#import "BaseViewController.h"
+@interface SAFormViewController : BaseViewController
 
 @end

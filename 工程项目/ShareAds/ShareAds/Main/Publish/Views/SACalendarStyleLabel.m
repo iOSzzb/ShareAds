@@ -84,6 +84,7 @@ static const CGFloat kMargin = 5;
     }
     _labels = [mutL copy];
     _labelBackgroundViews = [mutB copy];
+    [self setNeedsLayout];
     [self invalidateIntrinsicContentSize];
 }
 - (CGSize)intrinsicContentSize {

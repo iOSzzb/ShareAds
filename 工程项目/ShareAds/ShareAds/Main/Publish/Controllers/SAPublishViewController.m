@@ -64,7 +64,6 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
     [super viewWillLayoutSubviews];
     self.tableHeaderView.frame = CGRectMake(0, 0, _tableView.bounds.size.width, CGRectGetMaxY(_myPublishView.frame));
     [_publishBtn sizeToFit];
-    [_publishBtn addTarget:self action:@selector(publishbtnClicked) forControlEvents:UIControlEventTouchUpInside];
     CGSize btnSize = CGSizeMake(50, 50);
     _publishBtn.frame = CGRectMake(self.view.bounds.size.width - btnSize.width - 25, self.view.bounds.size.height - self.tabBarController.tabBar.bounds.size.height - 20 - btnSize.height, btnSize.width, btnSize.height);
 }
@@ -92,6 +91,7 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
     header.ignoredScrollViewContentInsetTop = 20;
     self.tableView.mj_header = header;
     self.tableView.mj_footer = [MJRefreshAutoFooter footerWithRefreshingTarget:self refreshingAction:@selector(pullUp)];
+    self.tableView.sectionFooterHeight = 0.1;
 }
 - (void)p_setupPosterBanner {
     self.posterBanner = [[UIView alloc] init];
@@ -104,7 +104,7 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
         make.centerY.equalTo(_posterBanner.mas_centerY);
     }];
     UILabel *label1 = [UILabel new];
-    NSString *str1 = @"位广告主正在\"推介汇\"";
+    NSString *str1 = @"位广告主正在推介汇";
     NSString *str2 = @"推广";
     NSString *str = [NSString stringWithFormat:@"%@%@",str1,str2];
     NSMutableAttributedString *mutStr = [[NSMutableAttributedString alloc] initWithString:str];
@@ -117,7 +117,7 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
     [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_posterNumLabel.mas_right).offset(8);
         make.centerY.equalTo(_posterBanner.mas_centerY);
-        make.right.equalTo(_posterBanner.mas_right);
+//        make.right.equalTo(_posterBanner.mas_right);
     }];
     _posterBanner.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
     [_tableHeaderView addSubview:_posterBanner];
@@ -134,8 +134,14 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
         make.left.equalTo(_userBanner.mas_left).offset(8);
         make.centerY.equalTo(_userBanner.mas_centerY);
     }];
+    NSString *str1 = @"位会员在全国使用";
+    NSString *str2 = @"推介汇";
+    NSString *str = [NSString stringWithFormat:@"%@%@",str1,str2];
+    NSMutableAttributedString *mutStr = [[NSMutableAttributedString alloc] initWithString:str];
+    [mutStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:[UIColor blackColor]} range:[str rangeOfString:str1]];
+    [mutStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:[UIColor redColor]} range:[str rangeOfString:str2]];
     UILabel *label = [[UILabel alloc] init];
-    label.text = @"位广告主正在\"推介汇\"";
+    label.attributedText = mutStr;
     label.font = [UIFont systemFontOfSize:14];
     [_userBanner addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -204,26 +210,28 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
         make.top.equalTo(_userBanner.mas_bottom).offset(10);
         make.left.equalTo(_tableHeaderView.mas_left);
         make.right.equalTo(_tableHeaderView.mas_right);
-        make.height.equalTo(@35);
+        make.height.equalTo(@40);
     }];
-    UIView *topLine = [UIView new];
-    topLine.backgroundColor = LIGHT_GRAY_BORDER_COLOR;
-    [myMoneyView addSubview:topLine];
-    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(myMoneyView.mas_top);
-        make.left.equalTo(myMoneyView.mas_left);
-        make.right.equalTo(myMoneyView.mas_right);
-        make.height.equalTo(@0.5);
-    }];
-    UIView *bottomLine = [UIView new];
-    bottomLine.backgroundColor = LIGHT_GRAY_BORDER_COLOR;
-    [myMoneyView addSubview:bottomLine];
-    [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(myMoneyView.mas_bottom);
-        make.left.equalTo(myMoneyView.mas_left);
-        make.right.equalTo(myMoneyView.mas_right);
-        make.height.equalTo(@0.5);
-    }];
+    myMoneyView.backgroundColor = [UIColor whiteColor];
+    _tableHeaderView.backgroundColor = LIGHT_GRAY_BACKGROUND_COLOR;
+////    UIView *topLine = [UIView new];
+//    topLine.backgroundColor = LIGHT_GRAY_BORDER_COLOR;
+//    [myMoneyView addSubview:topLine];
+//    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(myMoneyView.mas_top);
+//        make.left.equalTo(myMoneyView.mas_left);
+//        make.right.equalTo(myMoneyView.mas_right);
+//        make.height.equalTo(@0.5);
+//    }];
+//    UIView *bottomLine = [UIView new];
+//    bottomLine.backgroundColor = LIGHT_GRAY_BORDER_COLOR;
+//    [myMoneyView addSubview:bottomLine];
+//    [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(myMoneyView.mas_bottom);
+//        make.left.equalTo(myMoneyView.mas_left);
+//        make.right.equalTo(myMoneyView.mas_right);
+//        make.height.equalTo(@0.5);
+//    }];
     self.myMoneyView = myMoneyView;
 }
 - (void)p_setupMyPublishView {
@@ -231,12 +239,13 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
     [_tableHeaderView addSubview:mypublishView];
     mypublishView.textLabel.text = @"我的发布";
     [mypublishView.leftArrow setHidden:YES];
+    mypublishView.backgroundColor = [UIColor whiteColor];
 //    [mypublishView addTarget:self action:@selector(myMoneyClicked:) forControlEvents:UIControlEventTouchUpInside];
     [mypublishView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_myMoneyView.mas_bottom);
+        make.top.equalTo(_myMoneyView.mas_bottom).offset(10);
         make.left.equalTo(_tableHeaderView.mas_left);
         make.right.equalTo(_tableHeaderView.mas_right);
-        make.height.equalTo(@35);
+        make.height.equalTo(@40);
     }];
     UIView *bottomLine = [UIView new];
     bottomLine.backgroundColor = LIGHT_GRAY_BORDER_COLOR;
@@ -259,6 +268,8 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
     _publishBtn.backgroundColor = APP_TIN_COLOR;
     _publishBtn.frame = CGRectMake(self.view.bounds.size.width - btnSize.width - 25, self.view.bounds.size.height - self.tabBarController.tabBar.bounds.size.height - 20 - btnSize.height, btnSize.width, btnSize.height);
     NSLog(@"%@",[NSString stringWithFormat:@"%@",NSStringFromCGRect(_publishBtn.frame)] );
+    [_publishBtn addTarget:self action:@selector(publishbtnClicked) forControlEvents:UIControlEventTouchUpInside];
+
     [self.view addSubview:_publishBtn];
 
 }
@@ -270,19 +281,76 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
     SAPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCellID forIndexPath:indexPath];
     Advertisement *model = _dataSource[indexPath.row];
     [cell.adsImageView sd_setImageWithURL:[NSURL URLWithString:model.iconUrl]];
-    cell.nameLabel.text = model.title;
-    cell.priceLabel.text = [NSString stringWithFormat:@"单价%@",model.price];
-    cell.amountLabel.text = [NSString stringWithFormat:@"总价%@",model.amount];
+    NSString *titleWithBrackets = [NSString stringWithFormat:@"【%@】",model.title];
+    NSString *title = [NSString stringWithFormat:@"%@%@",titleWithBrackets,model.content];
+    NSMutableAttributedString *attrbutedTitle = [[NSMutableAttributedString alloc] initWithString:title];
+    
+    NSRange titleRange = [title rangeOfString:titleWithBrackets];
+    [attrbutedTitle addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15 weight:UIFontWeightRegular],NSForegroundColorAttributeName:[UIColor redColor]} range:titleRange];
+    NSRange contentRange = [title rangeOfString:model.content];
+    [attrbutedTitle addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15 weight:UIFontWeightRegular],NSForegroundColorAttributeName:[UIColor blackColor]} range:contentRange];
+    cell.nameLabel.attributedText = attrbutedTitle;
+//    cell.nameLabel.text = model.title;
+    cell.priceLabel.text = [NSString stringWithFormat:@"单价%0.2f元",[model.price floatValue]] ;
+    cell.amountLabel.text = [NSString stringWithFormat:@"剩余%0.2f元",[model.remainAmount floatValue]];
     __weak typeof(self) weakSelf = self;
-    cell.actionBlock = ^(PublishCellOptType actionType) {
-        if (actionType == PublishCellOptTypeRemove) {
-            [weakSelf removeMyAds:model];
-        }
-        if (actionType == PublishCellOptTypeEdit) {
-            [weakSelf editMyAds:model];
-        }
-    };
+//    cell.actionBlock = ^(PublishCellOptType actionType) {
+//        if (actionType == PublishCellOptTypeLeft) {
+//            [weakSelf removeMyAds:model];
+//        }
+//        if (actionType == PublishCellOptTypeRight) {
+//            [weakSelf editMyAds:model];
+//        }
+//    };
+    if ([model.status isEqualToString:@"01"]) {//已上架
+        [cell.leftBtn setTitle:@"下架" forState:UIControlStateNormal];
+        [cell.rightBtn setTitle:@"编辑" forState:UIControlStateNormal];
+        cell.actionBlock = ^(PublishCellOptType actionType) {
+            if (actionType == PublishCellOptTypeLeft) {
+                [weakSelf removeMyAds:model];
+            }
+            if (actionType == PublishCellOptTypeRight) {
+                [weakSelf editMyAds:model];
+            }
+        };
+    } else if ([model.status isEqualToString:@"02"]) {//审核中
+        [cell.leftBtn setTitle:@"预览" forState:UIControlStateNormal];
+        [cell.rightBtn setTitle:@"编辑" forState:UIControlStateNormal];
+        cell.actionBlock = ^(PublishCellOptType actionType) {
+            if (actionType == PublishCellOptTypeLeft) {
+                [weakSelf preview:model];
+            }
+            if (actionType == PublishCellOptTypeRight) {
+                [weakSelf editMyAds:model];
+            }
+        };
+    } else if ([model.status isEqualToString:@"03"]) {//已下架
+        [cell.leftBtn setTitle:@"快速上架" forState:UIControlStateNormal];
+        [cell.rightBtn setTitle:@"删除" forState:UIControlStateNormal];
+        cell.actionBlock = ^(PublishCellOptType actionType) {
+            if (actionType == PublishCellOptTypeLeft) {
+                [weakSelf quickPost:model];
+            }
+            if (actionType == PublishCellOptTypeRight) {
+                [weakSelf deleteAds:model];
+            }
+        };
+    } else if ([model.status isEqualToString:@"04"]) {//编辑审核中
+        [cell.leftBtn setTitle:@"预览" forState:UIControlStateNormal];
+        [cell.rightBtn setTitle:@"编辑" forState:UIControlStateNormal];
+        cell.actionBlock = ^(PublishCellOptType actionType) {
+            if (actionType == PublishCellOptTypeLeft) {
+                [weakSelf preview:model];
+            }
+            if (actionType == PublishCellOptTypeRight) {
+                [weakSelf editMyAds:model];
+            }
+        };
+    }
     return cell;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return [UIView new];
 }
 #pragma mark - 点击事件
 - (void)myMoneyClicked:(UIControl *)control {
@@ -334,23 +402,30 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
     NSDictionary *dic = @{@"type":type};
     NSMutableDictionary *mutDic = [[NSMutableDictionary alloc] initWithDictionary:dic];
     if (area) {
-        [mutDic setDictionary:area];
+        [mutDic addEntriesFromDictionary:area];
     }
     [NetworkInterface getSpecUserNumber:dic success:^(NSDictionary *response) {
         NSLog(@"");
         NSString *adNumer = response[@"adNumber"];
         NSString *usNumber = response[@"usNumber"];
         NSMutableString *mutstr = [NSMutableString stringWithString:usNumber];
+        NSMutableString *mutstrAD = [NSMutableString stringWithString:adNumer];
         for (int i = 0; i < 7 - usNumber.length; i ++) {
             [mutstr insertString:@"0" atIndex:0];
         }
-        if ([type isEqualToString:@"01"]) {
-            self.posterNumLabel.text = mutstr;
+        for (int i = 0; i < 7 - adNumer.length; i ++) {
+            [mutstrAD insertString:@"0" atIndex:0];
         }
-        if ([type isEqualToString:@"02"]) {
-            self.userNumLabel.text = mutstr;
-            [self.numberBtn setTitle:adNumer forState:UIControlStateNormal];
-        }
+        self.userNumLabel.text = mutstrAD;
+        self.posterNumLabel.text = mutstr;
+        [self.numberBtn setTitle:adNumer forState:UIControlStateNormal];
+//        if ([type isEqualToString:@"01"]) {
+//            self.posterNumLabel.text = mutstr;
+//        }
+//        if ([type isEqualToString:@"02"]) {
+//            self.userNumLabel.text = mutstrAD;
+//            [self.numberBtn setTitle:adNumer forState:UIControlStateNormal];
+//        }
         
     } failure:^(NSString *message, NSInteger errorCode) {
         NSLog(@"");
@@ -412,6 +487,16 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
         [SVProgressHUD showErrorWithStatus:message];
     }];
 }
+- (void)preview:(Advertisement *)ads {
+    
+}
+- (void)quickPost:(Advertisement *)ads {
+    
+}
+
+- (void)deleteAds:(Advertisement *)ads {
+    
+}
 - (void)reloadData {
     [self pullDown];
     [NetworkInterface getUserInfo:^{
@@ -420,4 +505,5 @@ static NSString * const kTableViewCellID = @"TableViewCellID";
     }];
 
 }
+
 @end
